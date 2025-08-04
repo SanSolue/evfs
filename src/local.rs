@@ -93,45 +93,45 @@ impl FileSystem for LocalFileSystem {
     }
 }
 
-#[cfg(feature = "enc")]
-mod encrypted {
-use super::*;
-    pub struct LocalEncryptedFileSystem {
-        internal: LocalFileSystem,
-        key: Vec<u8>,
+
+// Tests for the LocalFileSystem
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_local_filesystem_creation() {
+        let fs = LocalFileSystem::new("test_dir", true);
+        assert!(fs.is_ok());
+        let fs = LocalFileSystem::new("test_dir", false);
+        assert!(fs.is_ok());
+        // Open a writable file system
+        let fs = LocalFileSystem::new("test_dir", true);
+        assert!(fs.is_ok());
+        // Open a non-writable file system
+        let fs = LocalFileSystem::new("test_dir_non_existent", false);
+        assert!(fs.is_err());
+        // Clean up
+        std::fs::remove_dir_all("test_dir").ok();
     }
-    impl LocalEncryptedFileSystem {
-        pub fn new(base_path: &str, writable: bool, key: Vec<u8>) -> Result<Self, FileSystemError> {
-            let internal = LocalFileSystem::new(base_path, writable)?;
-            Ok(LocalEncryptedFileSystem { internal, key })
-        }
-        fn encrypt(&self, content: FileContent) -> FileContent {
-            content
-        }
-        fn decrypt(&self, content: FileContent) -> FileContent {
-            content
-        }
-    }
-    impl FileSystem for LocalEncryptedFileSystem {
-        fn read_file(&self, path: &str) -> Result<FileContent, FileSystemError> {
-            let content = self.internal.read_file(path)?;
-            Ok(self.decrypt(content))
-        }
 
-        fn write_file(&self, path: &str, content: FileContent) -> Result<(), FileSystemError> {
-            let encrypted_content = self.encrypt(content);
-            self.internal.write_file(path, encrypted_content)
-        }
+    #[test]
+    fn test_local_filesystem_read_write() {
+        let fs = LocalFileSystem::new("test_dir_rw", true).unwrap();
+        let content = b"Hello, World!";
+        let path = "test_file.txt";
 
-        fn delete_file(&self, path: &str) -> Result<(), FileSystemError> {
-            self.internal.delete_file(path)
-        }
-
-        fn list_files(&self, directory: &str) -> Result<Vec<FileInfo>, FileSystemError> {
-            self.internal.list_files(directory)
-        }
+        // Write file
+        fs.write_file(path, content.to_vec()).unwrap();
+        // Read file
+        let read_content = fs.read_file(path).unwrap();
+        assert_eq!(read_content, content);
+        // List files
+        let files = fs.list_files(".").unwrap();
+        assert!(files.iter().any(|f| f.name == "test_file.txt"));
+        // Delete file
+        fs.delete_file(path).unwrap();
+        // Verify deletion
+        let read_result = fs.read_file(path);
+        assert!(read_result.is_err());
     }
 }
-
-#[cfg(feature = "enc")]
-pub use encrypted::LocalEncryptedFileSystem;
