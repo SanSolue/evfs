@@ -1,12 +1,26 @@
 use std::path::PathBuf;
 use crate::{FileInfo, FileSystem, FileSystemError, FileContent};
 
+/// A local file system implementation that reads and writes files to the local disk.
+/// It can be configured to be writable or read-only.
 pub struct LocalFileSystem {
     base_path: PathBuf,
     writable: bool,
 }
 
 impl LocalFileSystem {
+
+    /// # LocalFileSystem::new(base_path: &str, writable: bool)
+    /// Creates a new instance of `LocalFileSystem`.
+    ///
+    /// # Arguments
+    /// - _base_path:_ The base path where files will be stored.
+    /// - _writable:_ If true, the file system allows writing files; otherwise, it is read-only.
+    ///
+    /// # Returns
+    /// Result containing the `LocalFileSystem` instance or an error if the base path is invalid.
+    /// # Errors
+    /// `FileSystemError` if the base path is not valid for the specified mode.
     pub fn new(base_path: &str, writable: bool) -> Result<Self, FileSystemError> {
         let base_path = PathBuf::from(base_path);
         if writable {

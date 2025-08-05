@@ -10,7 +10,8 @@ license = "LGPL-2"
 aes-gcm = "0.10.3"
 
 [features]
-default = ["local", "archive", "local_enc"]
+default = ["local", "archive", "enc", "local_enc"]
+enc = []
 local = []
-archive = []
-local_enc = ["local"]
+archive = ["enc"]
+local_enc = ["local", "enc"]
