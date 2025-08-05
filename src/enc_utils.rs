@@ -43,7 +43,7 @@ impl EncUtils {
     /// Creates a new instance of `EncUtils` with the provided encryption key.
     ///
     /// # Arguments
-    ///  - `key`: The encryption key to use for encryption and decryption.
+    ///  - _key:_ The encryption key to use for encryption and decryption.
     ///
     /// # Errors
     /// Returns an error if the key is invalid (empty or exceeds maximum size).
@@ -66,8 +66,7 @@ impl EncUtils {
     /// Sets a new encryption key.
     ///
     /// # Arguments
-    ///
-    /// * `key` - The new encryption key to set.
+    /// - _key:_ The new encryption key to set.
     ///
     /// # Returns
     /// Result indicating success or an error if the key is invalid.
@@ -80,7 +79,7 @@ impl EncUtils {
     /// Encrypts the provided file content using AES-256-GCM.
     ///
     /// # Arguments
-    /// - `content` - The file content to encrypt.
+    /// - _content:_ The file content to encrypt.
     ///
     /// # Returns
     /// Result containing the encrypted content or an error if encryption fails.
@@ -101,7 +100,7 @@ impl EncUtils {
     /// Decrypts the provided file content using AES-256-GCM.
     ///
     /// # Arguments
-    /// - `content` - The encrypted file content to decrypt.
+    /// - _content:_ The encrypted file content to decrypt.
     ///
     /// # Returns
     /// Result containing the decrypted content or an error if decryption fails.
@@ -120,7 +119,7 @@ impl EncUtils {
     /// Static method to validate the key size.
     ///
     /// # Arguments
-    /// - `key` - The encryption key to validate.
+    /// - _key:_ The encryption key to validate.
     ///
     /// # Returns
     /// Result indicating success or an error if the key is invalid.

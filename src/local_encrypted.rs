@@ -3,17 +3,28 @@ use crate::core::*;
 use crate::local::*;
 use crate::enc_utils::*;
 
+/// A local file system implementation that reads and writes encrypted files to the local disk.
+/// It uses the `EncUtils` for encryption and decryption of file contents.
+/// It can be configured to be writable or read-only.
 pub struct LocalEncryptedFileSystem {
     internal: LocalFileSystem,
     enc_util: EncUtils,
 }
+
 impl LocalEncryptedFileSystem {
+
+    /// Creates a new instance of `LocalEncryptedFileSystem`.
+    /// # Arguments
+    /// - _base_path:_ The base path where files will be stored.
+    /// - _writable:_ If true, the file system allows writing files; otherwise,
+    ///   it is read-only.
     pub fn new(base_path: &str, writable: bool, key: Vec<u8>) -> Result<Self, FileSystemError> {
         let internal = LocalFileSystem::new(base_path, writable)?;
         let enc_util = EncUtils::new(key)?;
         Ok(LocalEncryptedFileSystem { internal, enc_util })
     }
 }
+
 impl FileSystem for LocalEncryptedFileSystem {
     fn read_file(&self, path: &str) -> Result<FileContent, FileSystemError> {
         let content = self.internal.read_file(path)?;
