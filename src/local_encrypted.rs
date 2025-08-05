@@ -18,7 +18,7 @@ impl LocalEncryptedFileSystem {
     /// - _base_path:_ The base path where files will be stored.
     /// - _writable:_ If true, the file system allows writing files; otherwise,
     ///   it is read-only.
-    pub fn new(base_path: &str, writable: bool, key: Vec<u8>) -> Result<Self, FileSystemError> {
+    pub fn new(base_path: &str, writable: bool, key: EncKey) -> Result<Self, FileSystemError> {
         let internal = LocalFileSystem::new(base_path, writable)?;
         let enc_util = EncUtils::new(key)?;
         Ok(LocalEncryptedFileSystem { internal, enc_util })
