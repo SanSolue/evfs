@@ -19,6 +19,7 @@ mod local_encrypted;
 
 #[cfg(feature = "enc")]
 mod enc_utils;
+mod archive;
 
 pub use core::*;
 

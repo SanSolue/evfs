@@ -10,7 +10,6 @@ pub struct LocalFileSystem {
 
 impl LocalFileSystem {
 
-    /// # LocalFileSystem::new(base_path: &str, writable: bool)
     /// Creates a new instance of `LocalFileSystem`.
     ///
     /// # Arguments
